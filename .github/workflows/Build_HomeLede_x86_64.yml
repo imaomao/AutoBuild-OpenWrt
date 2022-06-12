@@ -5,7 +5,7 @@
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
-name: Build_x86_64
+name: Build_HomLede_x86_64
 
 on: 
   release:
@@ -19,11 +19,11 @@ on:
   #  - cron: 0 8 * * 5
   
   watch:
-    types: [started]
+   types: [started]
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
@@ -60,8 +60,9 @@ jobs:
 
     - name: Clone source code
       env: 
-        REPO_URL: https://github.com/coolsnowwolf/lede
-        REPO_BRANCH: master
+        REPO_URL: https://github.com/xiaoqingfengATGH/HomeLede.git
+        REPO_BRANCH: k5
+
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
