@@ -66,14 +66,18 @@ jobs:
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
-        echo "src-git ssrp https://github.com/fw876/helloworld.git" >> ./feeds.conf.default
+        #echo "src-git ssrp https://github.com/fw876/helloworld.git" >> ./feeds.conf.default
+        sed -i 's/#src-git helloworld/src-git helloworld/g' ./feeds.conf.default
         
     - name: Update & Install feeds
       working-directory: ./openwrt
       run: |
         ./scripts/feeds update -a
         ./scripts/feeds install -a
-        ./scripts/feeds install -a
+        ./prepareCompile.sh
+       
+    - name: Generate configuration file
+      run: make defconfig
 
     #- name: Import external feeds - passwall
     #  working-directory: ./openwrt
@@ -86,13 +90,13 @@ jobs:
     #  run: |
     #    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon-jerrykuku
 
-    - name: Configuration Customization - Build_x86_64
-      env:
-        CONFIG_FILE: 'x86_64.config'
-      run: |
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x ./customize.sh && ./customize.sh
-        cd openwrt && make defconfig
+    #- name: Configuration Customization - Build_x86_64
+    #  env:
+    #    CONFIG_FILE: 'x86_64.config'
+    #  run: |
+    #    [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+    #    chmod +x ./customize.sh && ./customize.sh
+    #    cd openwrt && make defconfig
         
     - name: Download package
       working-directory: ./openwrt
