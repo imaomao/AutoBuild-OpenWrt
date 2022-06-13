@@ -76,6 +76,10 @@ jobs:
         ./scripts/feeds install -a
         ./prepareCompile.sh
        
+    - name: Generate configuration file
+      working-directory: ./openwrt
+      run: make defconfig
+
     #- name: Import external feeds - passwall
     #  working-directory: ./openwrt
     #  run: |
@@ -87,13 +91,13 @@ jobs:
     #  run: |
     #    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon-jerrykuku
 
-    - name: Configuration Customization - Build_x86_64
+    #- name: Configuration Customization - Build_x86_64
     #  env:
     #    CONFIG_FILE: 'x86_64.config'
-      run: |
+    #  run: |
     #    [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
     #    chmod +x ./customize.sh && ./customize.sh
-        cd openwrt && make defconfig
+    #    cd openwrt && make defconfig
         
     - name: Download package
       working-directory: ./openwrt
